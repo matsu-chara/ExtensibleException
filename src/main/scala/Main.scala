@@ -1,24 +1,24 @@
-import utils.DatabaseException
-import utils.HttpException
+import functions.{DatabaseFunction, HttpFunction, DatabaseAndHttpException}
+import utils._
+
+
 
 object Main {
   import utils.Implicit._
+  import DatabaseAndHttpException._
 
   def main(args: Array[String]): Unit = {
-    val e1 = Left[DatabaseException, String](DatabaseException("db error"))
-    val e2 = Left[HttpException, String](HttpException("http error"))
 
     // this is DatabaseException
     val e3 = for {
-      a <- e1
+      a <- DatabaseFunction.fetch()
     } yield ()
     println(e3.toString)
 
     // this is DatabaseAndHttpException
-    import utils.DatabaseAndHttpException._
-    val e4 = for {
-      a <- e1
-      b <- e2
+    val e4: Either[DatabaseAndHttpException, Unit] = for {
+      a <- DatabaseFunction.fetch()
+      b <- HttpFunction.fetch()
     } yield ()
     println(e4.toString)
   }

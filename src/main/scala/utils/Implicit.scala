@@ -1,5 +1,7 @@
 package utils
 
+trait RootException extends Throwable
+
 object Implicit {
   implicit class ExceptionEither[L <: RootException, R](val ee: Either[L, R]) {
     def map[L2 <: RootException, R2](f: R => R2)(implicit L2: L ~> L2): Either[L2, R2] = ee match {
