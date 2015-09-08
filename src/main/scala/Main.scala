@@ -38,5 +38,12 @@ object Main {
       case ReadException(m)  => println(s"Read Exception: $m")
       case WriteException(m) => println(s"Write Exception: $m")
     }
+
+    // this is FileAndHttpException
+    val e9 = for {
+      a <- e5.as[FileException].as[FileAndHttpException]
+      b <- e6.as[FileAndHttpException]
+    } yield ()
+
   }
 }

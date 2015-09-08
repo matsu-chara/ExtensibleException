@@ -10,6 +10,10 @@ object :-> {
   implicit def superclass[A, B >: A] = new :->[A, B] {
     def cast(a: A): B = a
   }
+
+  implicit def transitive[A, B, C](implicit L2: A :-> B, L3: B :-> C) = new :->[A, C] {
+    def cast(a: A): C = L3.cast(L2.cast(a))
+  }
 }
 
 object Transform {
